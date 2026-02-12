@@ -3,31 +3,33 @@
 @section('title', 'Tambah Kategori')
 
 @section('content')
-<div class="py-6">
-    <h1 class="text-3xl font-bold text-gray-900 mb-6">Tambah Kategori</h1>
+<div class="space-y-6">
+    <div>
+        <h1 class="text-3xl font-bold text-gray-900">Tambah Kategori</h1>
+        <p class="text-gray-500 mt-1">Buat kategori baru untuk alat</p>
+    </div>
 
-    <div class="bg-white shadow rounded-lg p-6">
+    <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-100">
         <form action="{{ route('categories.store') }}" method="POST">
             @csrf
             <div class="space-y-6">
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">Nama Kategori</label>
+                    <label for="name" class="block text-sm font-semibold text-gray-700 mb-1">Nama Kategori</label>
                     <input type="text" name="name" id="name" required value="{{ old('name') }}"
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                           class="block w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition">
                 </div>
-
                 <div>
-                    <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                    <label for="description" class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi</label>
                     <textarea name="description" id="description" rows="4"
-                              class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">{{ old('description') }}</textarea>
+                              class="block w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                              placeholder="Deskripsi kategori...">{{ old('description') }}</textarea>
                 </div>
             </div>
-
-            <div class="mt-6 flex justify-end space-x-3">
-                <a href="{{ route('categories.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md">
+            <div class="mt-8 flex flex-wrap gap-3">
+                <a href="{{ route('categories.index') }}" class="px-5 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-xl transition">
                     Batal
                 </a>
-                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md">
+                <button type="submit" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl shadow-lg shadow-indigo-200 transition">
                     Simpan
                 </button>
             </div>

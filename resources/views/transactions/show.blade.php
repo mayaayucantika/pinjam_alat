@@ -3,71 +3,76 @@
 @section('title', 'Detail Transaksi')
 
 @section('content')
-<div class="py-6">
-    <h1 class="text-3xl font-bold text-gray-900 mb-6">Detail Transaksi</h1>
+<div class="space-y-6">
+    <div>
+        <h1 class="text-3xl font-bold text-gray-900">Detail Transaksi</h1>
+        <p class="text-gray-500 mt-1">Informasi lengkap pengajuan peminjaman</p>
+    </div>
 
-    <div class="bg-white shadow rounded-lg p-6">
-        <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
-            <div>
+    <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-100">
+        <dl class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="p-4 rounded-xl bg-indigo-50/50">
                 <dt class="text-sm font-medium text-gray-500">Peminjam</dt>
-                <dd class="mt-1 text-sm text-gray-900">{{ $transaction->user->name }}</dd>
+                <dd class="mt-1 text-lg font-semibold text-gray-900">{{ $transaction->user->name }}</dd>
             </div>
-            <div>
+            <div class="p-4 rounded-xl bg-indigo-50/50">
                 <dt class="text-sm font-medium text-gray-500">Alat</dt>
-                <dd class="mt-1 text-sm text-gray-900">{{ $transaction->tool->name }}</dd>
+                <dd class="mt-1 text-lg font-semibold text-gray-900">{{ $transaction->tool->name }}</dd>
             </div>
-            <div>
+            <div class="p-4 rounded-xl bg-indigo-50/50">
                 <dt class="text-sm font-medium text-gray-500">Jumlah</dt>
-                <dd class="mt-1 text-sm text-gray-900">{{ $transaction->quantity }}</dd>
+                <dd class="mt-1 text-lg font-semibold text-gray-900">{{ $transaction->quantity }}</dd>
             </div>
-            <div>
+            <div class="p-4 rounded-xl bg-indigo-50/50">
                 <dt class="text-sm font-medium text-gray-500">Tanggal Pinjam</dt>
-                <dd class="mt-1 text-sm text-gray-900">{{ $transaction->borrow_date->format('d/m/Y') }}</dd>
+                <dd class="mt-1 text-lg font-semibold text-gray-900">{{ $transaction->borrow_date->format('d/m/Y') }}</dd>
             </div>
-            <div>
+            <div class="p-4 rounded-xl bg-indigo-50/50">
                 <dt class="text-sm font-medium text-gray-500">Tanggal Kembali</dt>
-                <dd class="mt-1 text-sm text-gray-900">{{ $transaction->return_date->format('d/m/Y') }}</dd>
+                <dd class="mt-1 text-lg font-semibold text-gray-900">{{ $transaction->return_date->format('d/m/Y') }}</dd>
             </div>
             @if($transaction->actual_return_date)
-                <div>
+                <div class="p-4 rounded-xl bg-emerald-50/50">
                     <dt class="text-sm font-medium text-gray-500">Tanggal Dikembalikan</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $transaction->actual_return_date->format('d/m/Y') }}</dd>
+                    <dd class="mt-1 text-lg font-semibold text-emerald-800">{{ $transaction->actual_return_date->format('d/m/Y') }}</dd>
                 </div>
             @endif
-            <div>
+            <div class="p-4 rounded-xl bg-indigo-50/50">
                 <dt class="text-sm font-medium text-gray-500">Status</dt>
-                <dd class="mt-1">
+                <dd class="mt-2">
                     @if($transaction->status === 'pending')
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                        <span class="inline-flex px-3 py-1 rounded-full text-sm font-semibold bg-amber-100 text-amber-800 ring-1 ring-amber-200">Pending</span>
                     @elseif($transaction->status === 'approved')
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Disetujui</span>
+                        <span class="inline-flex px-3 py-1 rounded-full text-sm font-semibold bg-emerald-100 text-emerald-800 ring-1 ring-emerald-200">Disetujui</span>
                     @elseif($transaction->status === 'rejected')
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Ditolak</span>
+                        <span class="inline-flex px-3 py-1 rounded-full text-sm font-semibold bg-rose-100 text-rose-800 ring-1 ring-rose-200">Ditolak</span>
                     @else
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Dikembalikan</span>
+                        <span class="inline-flex px-3 py-1 rounded-full text-sm font-semibold bg-sky-100 text-sky-800 ring-1 ring-sky-200">Dikembalikan</span>
                     @endif
                 </dd>
             </div>
             @if($transaction->notes)
-                <div class="sm:col-span-2">
+                <div class="sm:col-span-2 p-4 rounded-xl bg-gray-50">
                     <dt class="text-sm font-medium text-gray-500">Catatan</dt>
-                    <dd class="mt-1 text-sm text-gray-900">{{ $transaction->notes }}</dd>
+                    <dd class="mt-1 text-gray-900">{{ $transaction->notes }}</dd>
                 </div>
             @endif
         </dl>
 
-        <div class="mt-6 flex justify-end space-x-3">
+        <div class="mt-8 flex flex-wrap gap-3">
             @if(auth()->user()->isAdmin() || auth()->user()->isPetugas())
                 @if($transaction->status === 'pending')
                     <form action="{{ route('transactions.approve', $transaction) }}" method="POST" class="inline">
                         @csrf
-                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">
+                        <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-xl transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             Setujui
                         </button>
                     </form>
                     <form action="{{ route('transactions.reject', $transaction) }}" method="POST" class="inline">
                         @csrf
-                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md">
+                        <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 bg-rose-500 hover:bg-rose-600 text-white font-semibold rounded-xl transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                             Tolak
                         </button>
                     </form>
@@ -76,12 +81,14 @@
             @if($transaction->status === 'approved')
                 <form action="{{ route('transactions.return', $transaction) }}" method="POST" class="inline">
                     @csrf
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
+                    <button type="submit" class="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl transition">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                         Kembalikan
                     </button>
                 </form>
             @endif
-            <a href="{{ route('transactions.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-md">
+            <a href="{{ route('transactions.index') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-xl transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                 Kembali
             </a>
         </div>

@@ -53,7 +53,21 @@ class TransactionController extends Controller
         $validated = $request->validate([
             'tool_id' => ['required', 'exists:tools,id'],
             'borrow_date' => ['required', 'date', 'after_or_equal:today'],
-            'return_date' => ['required', 'date', 'after:borrow_date'],
+            'return_date' => [
+                'required',
+                'date',
+                'after:borrow_date',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!auth()->user()->isAdmin() && !auth()->user()->isPetugas()) {
+                        $borrow = \Carbon\Carbon::parse($request->borrow_date);
+                        $return = \Carbon\Carbon::parse($value);
+                        $expectedReturn = $borrow->copy()->addDay()->format('Y-m-d');
+                        if ($value !== $expectedReturn) {
+                            $fail('Peminjam hanya dapat meminjam untuk 1 hari. Tanggal kembali harus tepat 1 hari setelah tanggal pinjam.');
+                        }
+                    }
+                },
+            ],
             'quantity' => ['required', 'integer', 'min:1'],
             'notes' => ['nullable', 'string'],
         ]);
